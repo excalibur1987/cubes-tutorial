@@ -1,0 +1,36 @@
+{
+  "dimensions": [
+    { "name": "items", "attributes": ["itm_cd", "itm_name"] },
+    { "name": "stores", "attributes": ["wh_cd", "name"] },
+    { "name": "data_year" }
+  ],
+  "cubes": [
+    {
+      "name": "sales",
+      "dimensions": ["items", "stores", "data_year"],
+      "joins": [
+        { "master": "itm_cd", "detail": "items.itm_cd" },
+        { "master": "wh_cd", "detail": "stores.wh_cd" }
+      ],
+      "measures": [
+        { "name": "sale_qty", "label": "Quantity" },
+        { "name": "sale_amt", "label": "Amount" },
+        { "name": "sale_cost", "label": "Cost" }
+      ],
+      "aggregates": [
+        {
+          "name": "amount_sum",
+          "function": "sum",
+          "measure": "sale_amt"
+        },
+        {
+          "name": "record_count",
+          "function": "count"
+        }
+      ],
+      "mappings": {
+        "items.data_year": "data_year"
+      }
+    }
+  ]
+}
